@@ -1,0 +1,27 @@
+{
+  "accounts": {
+    "personal": {
+      "email": "your.personal@email.com"
+    },
+    "work": {
+      "email": "your.work@email.com"
+    },
+    "school": {
+      "email": "your.school@email.com"
+    }
+  },
+  "sync_rules": [
+    {
+      "source": "personal",
+      "destination": "work",
+      "new_summary": "私用",
+      "preserve_details": false
+    },
+    {
+      "source": "school",
+      "destination": "work",
+      "new_summary": "学校",
+      "preserve_details": false
+    }
+  ]
+}

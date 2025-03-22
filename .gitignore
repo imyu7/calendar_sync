@@ -1,0 +1,39 @@
+# 認証情報
+credentials.json
+tokens/*
+!tokens/.gitkeep
+
+# 設定ファイル（サンプルは除外しない）
+config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 仮想環境
+venv/
+ENV/
+
+# エディタ設定
+.idea/
+.vscode/
+*.swp
+*.swo 
