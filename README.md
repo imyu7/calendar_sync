@@ -1,26 +1,28 @@
-# Google カレンダー同期ツール
+# Google Calendar Sync Tool
 
-複数のGoogleカレンダーアカウント間で予定を同期するためのツールです。
+A tool for synchronizing events between multiple Google Calendar accounts.
 
-## 機能
+*Note: [Japanese version of this README](README_ja.md) is also available.*
 
-- 複数のGoogleカレンダーアカウント間で予定を同期
-- カスタム同期ルールの設定（ソースカレンダー、宛先カレンダー、イベントタイトルの変更など）
-- 削除された予定の同期
-- 重複予定の自動検出
+## Features
 
-## セットアップ
+- Synchronize events between multiple Google Calendar accounts
+- Custom sync rules (source calendar, destination calendar, event title changes, etc.)
+- Synchronization of deleted events
+- Automatic detection of duplicate events
 
-1. Google Cloud Platformで新しいプロジェクトを作成し、Google Calendar APIを有効にします
-2. OAuth 2.0クライアントIDを作成し、credentials.jsonとしてダウンロードします
-3. `config.json`ファイルを編集して、アカウント情報と同期ルールを設定します
-4. 必要なパッケージをインストール: `pip install -r requirements.txt`
+## Setup
 
-## 設定
+1. Create a new project in Google Cloud Platform and enable the Google Calendar API
+2. Create an OAuth 2.0 Client ID and download it as credentials.json
+3. Edit the `config.json` file to configure account information and sync rules
+4. Install required packages: `pip install -r requirements.txt`
 
-`config.json`ファイルで以下の設定を行います：
+## Configuration
 
-### アカウント設定
+Configure the following settings in the `config.json` file:
+
+### Account Settings
 
 ```json
 "accounts": {
@@ -31,54 +33,70 @@
 }
 ```
 
-- `account_key`: アカウントを識別するための任意のキー
-- `email`: Googleアカウントのメールアドレス
+- `account_key`: Arbitrary key to identify the account
+- `email`: Google account email address
 
-認証トークンは自動的に `tokens/token_{account_key}.json` という名前で保存されます。
+Authentication tokens for each account are automatically saved as `tokens/token_{account_key}.json`.
 
-### 同期ルール設定
+#### Using Service Account Authentication (Optional)
+
+```json
+"accounts": {
+  "account_key": {
+    "email": "your.email@example.com",
+    "auth_type": "service_account",
+    "service_account_file": "service-account-key.json"
+  },
+  ...
+}
+```
+
+- `auth_type`: Authentication type (specify "service_account" to use service account authentication)
+- `service_account_file`: Path to the service account key JSON file
+
+### Sync Rules Settings
 
 ```json
 "sync_rules": [
   {
     "source": "source_account_key",
     "destination": "destination_account_key",
-    "new_summary": "変更後のイベントタイトル",
+    "new_summary": "Modified event title",
     "preserve_details": false
   },
   ...
 ]
 ```
 
-- `source`: 同期元アカウントのキー
-- `destination`: 同期先アカウントのキー
-- `new_summary`: 同期先での予定タイトル（オプション）
-- `preserve_details`: 詳細情報を保持するかどうか（true/false）
+- `source`: Source account key
+- `destination`: Destination account key
+- `new_summary`: Event title in the destination calendar (optional)
+- `preserve_details`: Whether to preserve event details (true/false)
 
-## 使い方
+## Usage
 
 ```
 python main.py
 ```
 
-初回実行時は各アカウントの認証が必要です。ブラウザが開き、各アカウントにログインするよう求められます。
-認証トークンは`tokens`フォルダに保存され、再利用されます。
+On first run, authentication is required for each account. A browser will open and prompt you to log in to each account.
+Authentication tokens are saved in the `tokens` folder and reused.
 
-## ディレクトリ構造
+## Directory Structure
 
 ```
 .
-├── config.json         # 設定ファイル
-├── config.sample.json  # 設定ファイルのサンプル
-├── credentials.json    # Google API認証情報（自分で取得する必要あり）
-├── main.py             # メインスクリプト
-├── requirements.txt    # 必要なパッケージリスト
-└── tokens/             # 認証トークンが保存されるディレクトリ
-    └── token_{account_key}.json # 各アカウントの認証トークン
+├── config.json           # Configuration file
+├── config.sample.json    # Sample configuration file
+├── credentials.json      # Google API credentials (must be obtained separately)
+├── main.py               # Main script
+├── requirements.txt      # Required package list
+└── tokens/               # Directory where authentication tokens are stored
+    └── token_{account_key}.json # Authentication tokens for each account
 ```
 
-## 注意事項
+## Notes
 
-- 認証情報（credentials.jsonや`tokens`フォルダ内のファイル）はGitHubにアップロードしないでください
-- アクセストークンは安全に保管してください
-- 定期的に実行する場合はcronなどのスケジューラを使用してください 
+- Do not upload authentication information (credentials.json and files in the `tokens` folder) to GitHub
+- Store access tokens securely
+- For regular execution, use a scheduler like cron 
