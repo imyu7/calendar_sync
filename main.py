@@ -18,6 +18,9 @@ SCOPES = [
 # Path to tokens folder
 TOKENS_DIR = "tokens"
 
+# Default number of days to sync
+DEFAULT_SYNC_DAYS = 60
+
 
 class CalendarSyncManager:
     def __init__(self, config_path: str = "config.json"):
@@ -254,7 +257,7 @@ class CalendarSyncManager:
                 dest_rule_summaries.append(rule["new_summary"])
         return dest_rule_summaries
 
-    def _get_events(self, service: Any, days: int = 31) -> List[dict]:
+    def _get_events(self, service: Any, days: int = DEFAULT_SYNC_DAYS) -> List[dict]:
         """
         Retrieve events from the specified service from the current time to the specified number of days ahead.
         """
