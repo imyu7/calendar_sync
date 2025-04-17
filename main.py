@@ -103,42 +103,7 @@ class CalendarSyncManager:
         token_filename = f"token_{account_key}.json"
         token_file = os.path.join(TOKENS_DIR, token_filename)
 
-        # Check if account has service account configuration
-        auth_type = self.accounts[account_key].get("auth_type")
-        service_account_file = self.accounts[account_key].get("service_account_file")
-
-        if auth_type == "service_account" and service_account_file:
-            return self._get_service_account_credentials(
-                account_key, service_account_file
-            )
-        else:
-            return self._get_oauth_credentials(account_key, token_file)
-
-    def _get_service_account_credentials(
-        self, account_key: str, service_account_file: str
-    ) -> Optional[Any]:
-        """Handle service account authentication."""
-        try:
-            # Import module only for local execution
-            if os.path.exists("deploy/service_account_auth.py"):
-                import sys
-
-                sys.path.append("deploy")
-                from service_account_auth import get_service_credentials
-
-                if os.path.exists(service_account_file):
-                    return get_service_credentials(service_account_file)
-                else:
-                    print(
-                        f"Error: Service account key file {service_account_file} not found"
-                    )
-                    return None
-            else:
-                print("Error: service_account_auth.py not found")
-                return None
-        except Exception as e:
-            print(f"Service account authentication failed: {e}")
-            return None
+        return self._get_oauth_credentials(account_key, token_file)
 
     def _get_oauth_credentials(self, account_key: str, token_file: str) -> Credentials:
         """Handle OAuth authentication flow."""
